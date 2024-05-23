@@ -55,6 +55,8 @@ function steefs_set_post_to_api( $entry, $form ) {
 		$token = 'aZUCIuLmH3UHLsT0s0vC9mmLuTc3ve'; //Your API token
 		$api = new gripp_API($token);
 		$template = get_field('templateid', 'option');
+		$naam_website = get_field('naam_website', 'option');
+
 		if($arrid):
 			$arrangementitem = steefs_get_post_by_item($arrid);
 		else:
@@ -280,9 +282,9 @@ function steefs_set_post_to_api( $entry, $form ) {
 				'customfield_eindlocatie' => $eindlocatie,
 				'customfield_aantalpersonen' => rgar( $entry, $entryfields['personen'] ),
 				'customfield_opmerkingendoorklant' => rgar( $entry, $entryfields['opmerkingen'] ),
-				'customfield_offerteaanvraag' => 'devolkswagenbus.nl offerte via website',
+				'customfield_offerteaanvraag' => $naam_website . ' offerte via website',
 				'customfield_cadeaubonnummer' => rgar( $entry, $entryfields['cadeaubonnummer'] ),
-				'customfield_website' => 'devolkswagenbus.nl',
+				'customfield_website' => $naam_website,
 				'customfield_oldtimer' => $oldtimer,
 				'customfield_gelegenheid' => $gelegenheid,
 				'customfield_extraoldtimer' => rgar( $entry, $entryfields['extra_oldtimer_1'] ),
