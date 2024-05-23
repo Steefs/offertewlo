@@ -3,23 +3,27 @@ function datalayerecommerce_func(){
     ob_start();
 
     if(isset($_GET['oid'])):
-        
+        $offerte_form_id = get_field('offerte_form_id' , 'options');
+        $offerteid_veld_id = get_field('offerteid_veld_id' , 'options');
+        $unique_code_veld_id = get_field('unique_code_veld_id' , 'options');
+        $huurdatum_veld_id = get_field('huurdatum_veld_id' , 'options');
+
         $search_criteria = array(
             'status'        => 'active',
             'field_filters' => array(
                 'mode' => 'any',
                 array(
-                    'key'   => '62',
+                    'key'   =>  $unique_code_veld_id,
                     'value' => $_GET['oid']
                 )
             )
         );
         $offerteid = false;
         // Getting the entries
-        $entries = GFAPI::get_entries( 1, $search_criteria );
+        $entries = GFAPI::get_entries(  $offerte_form_id, $search_criteria );
         foreach($entries as $entrie):
-            $offerteid = rgar( $entrie, '63' );
-            $huurdatum = rgar( $entrie, '5' );
+            $offerteid = rgar( $entrie, $offerteid_veld_id );
+            $huurdatum = rgar( $entrie, $huurdatum_veld_id );
 
         endforeach;
         if( $offerteid):
@@ -38,6 +42,7 @@ function datalayerecommerce_func(){
             $responses = $api->offer_getone($filters);
             $response = $responses[0]['result'];
             if($response['rows']):
+
                 $price = '';
                 $cat = '';
 
