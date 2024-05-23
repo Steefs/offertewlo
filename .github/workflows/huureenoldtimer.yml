@@ -13,5 +13,6 @@ jobs:
       with:
         server: 94.237.111.244
         username: stefan@huureenoldtimer.nl
+        timeout: 60000
         password: ${{ secrets.password }}
         server-dir: public_html/offerte-aanvragen/wp-content/themes/hello-theme-child-master/
