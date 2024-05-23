@@ -14,4 +14,4 @@ jobs:
         server: 94.237.111.244
         username: stefan@devolkswagenbus.nl
         password: ${{ secrets.password }}
-        local-dir: /public_html/offerte/wp-content/themes/hello-theme-child-master/
+        server-dir: public_html/offerte/wp-content/themes/hello-theme-child-master/
