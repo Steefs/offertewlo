@@ -1,0 +1,636 @@
+<?php
+// No direct access
+defined('_JEXEC') or die;
+
+class plgVisformsGrippintegration extends JPlugin
+{
+    public function __construct(& $subject, $config) {
+        parent::__construct($subject, $config);
+        //load the translation
+        $this->loadLanguage();
+    }
+	
+
+	public function onVisformsBeforeFormSave($context, $form, $fields)
+	{
+		// Skip plugin if context is wrong
+		$allowedContexts = array('com_visforms.form', 'mod_visforms.form', 'plg_vfformview.form');
+		if (!in_array($context, $allowedContexts)) {
+			return true;
+		}
+		$app = JFactory::getApplication();
+		// only perform action, if we are in front end
+		if ($app->isAdmin()) {
+			return true;
+		}
+		
+		if ($form->id == 12) {
+			// your code in here
+
+			// Include Gripp API connector, see the general page for more information.
+			require_once(JPATH_SITE.'/plugins/visforms/grippintegration/api.class.php');
+
+					// Your API token and URL.
+			$token = "iRgcZURVGfgmEfRhfb79yAOzpAExZl";
+
+			$API = new com_gripp_API($token);
+
+			// Variabelen; afkomstig van webformulier
+			$emailValue = $_POST['form12email'];
+			$voornaamValue = $_POST['form12voornaam'];
+			$partnerValue = $_POST['form12naampartner'];
+			$tussenvoegselValue = $_POST['form12tussenvoegsel'];
+			$achternaamValue = $_POST['form12achternaam'];
+			$phoneValue = $_POST['form12telefoon'];
+			$salutationValue = $_POST['form12salutation'];
+			$aanhefValue = $salutationValue[0];
+			$companyName = $_POST['form12bedrijfsnaam'];
+			$adresValue = $_POST['form12adres'];
+			$huisnrValue = $_POST['form12huisnummer'];
+			$postcodeValue = $_POST['form12postcode'];
+			$plaatsValue = $_POST['form12plaats'];
+			$land = $_POST['form12land'];
+			$landValue = $land[0];
+			$notesValue = $_POST['form12opmerkingen'];
+			$gelegenheid = $_POST['form12gelegenheid'];
+			$gelegenheidValue = $gelegenheid[0];
+			$openavondForm = $_POST['form12openavond'];
+			$openavondFormValue = $openavondForm[0];
+			$offerteontvangen = $_POST['form12offerte-ontvangen'];
+			$offerteontvangenValue = $offerteontvangen[0];
+			$definitiefboeken = $_POST['form12definitief-boeken'];
+			$definitiefboekenValue = $definitiefboeken[0];
+			$oldtimerKeuze = $_POST['form12oldtimers'];
+			$oldtimer = $oldtimerKeuze[0];
+			$gelegenheidPhotobooth = $_POST['form12gelegenheid-photobooth'];
+			$gelegenheidPhotoboothKeuze = $gelegenheidPhotobooth[0];
+			$oldtimerKeuzePhotobooth = $_POST['form12oldtimers-bussen'];
+			$oldtimerBus = $oldtimerKeuzePhotobooth[0];
+			$oldtimerKeuzeCamper = $_POST['form12oldtimers-campers'];
+			$oldtimerCamper = $oldtimerKeuzeCamper[0];
+			$oldtimerKeuzeToeren = $_POST['form12oldtimers-dagje-toeren'];
+			$oldtimerToeren = $oldtimerKeuzeToeren[0];
+			$oldtimerKeuzeEscaperoom = $_POST['form12oldtimers-escape-room'];
+			$oldtimerKeuzeEscape = $oldtimerKeuzeEscaperoom[0];
+			$nostalgicoKeuze = $_POST['form12nostalgico'];
+			$nostalgico = $nostalgicoKeuze[0];
+			$nostalgicoKeuzeToeren = $_POST['form12nostalgico-toeren'];
+			$nostalgicoToeren = $nostalgicoKeuzeToeren[0];
+			$huurdatum = $_POST['form12huurdatum'];
+			$einddatum = $_POST['form12einddatum'];
+			$starttijd = $_POST['form12starttijd'];
+			$starttijdGroep = $_POST['form12starttijd-groep'];
+			$starttijdGala = $_POST['form12starttijd-gala'];
+			$starttijdZakelijk = $_POST['form12starttijd-zakelijk'];
+			$starttijdPhotobooth = $_POST['form12starttijd-photobooth'];
+			$startlocatie = $_POST['form12startlocatie'];
+			$eindtijd = $_POST['form12eindtijd'];
+			$eindtijdGroep = $_POST['form12eindtijd-groep'];
+			$eindtijdGala = $_POST['form12eindtijd-gala'];
+			$eindtijdZakelijk = $_POST['form12eindtijd-zakelijk'];
+			$eindtijdPhotobooth = $_POST['form12eindtijd-photobooth'];
+			$eindlocatie = $_POST['form12eindlocatie'];
+			$referentie = $_POST['form12referentie'];
+			$haalservice = $_POST['form12haalservice'];
+			$brengservice = $_POST['form12brengservice'];
+			$rallyspeurtocht = $_POST['form12rallyspeurtocht'];
+			$escapevroom = $_POST['form12escapevroom'];
+			$chauffeur = $_POST['form12chauffeur'];
+			$photobooth = $_POST['form12photobooth-optie'];
+			$puzzeltocht = $_POST['form12puzzeltocht'];
+			$highteaarrangement = $_POST['form12high-tea'];
+			$picknickarrangement = $_POST['form12picknick'];
+			$pannenkoekeneten = $_POST['form12pannenkoeken'];
+			$fotoshoot = $_POST['form12fotoshoot'];
+			$waaromDagjeToeren = $_POST['form12gelegenheid-toeren'];
+			$aantalPersonen = $_POST['form12aantal-personen'];
+			$vergaderarrangement = $_POST['form12vergaderarrangement'];
+			$kerstarrangement = $_POST['form12kerstarrangement'];
+			$sinterklaasarrangement = $_POST['form12sinterklaasarrangement'];
+			$nieuwjaarsarrangement = $_POST['form12nieuwjaarsarrangement'];
+			$wierijdt = $_POST['form12wie-rijdt'];
+			$eerderophalen = $_POST['form12ophalen'];
+			$gevondenValue = $_POST['form12hoe-gevonden'];
+			$hoeGevonden = $gevondenValue[0];
+			$anders = $_POST['form12anders'];
+			$ontvangst = $_POST['form12ontvangst'];
+			$terugkomst = $_POST['form12terugkomst'];
+			$openavond = $_POST['form12openavondoptie'];
+			$openavondDatum = $_POST['form12datum-openavond'];
+			$kleur2cv = $_POST['form12kleur2cv'];
+			$gewenstekleur2cv = $kleur2cv[0];
+			$gewenstekleur2cv = " ".$gewenstekleur2cv;
+			$extraOldtimer = $_POST['form12extra-oldtimers'];
+			$extraOldtimerValue = $extraOldtimer[0];
+			$extraOldtimer2 = $_POST['form12extra-oldtimers-2'];
+			$extraOldtimer2Value = $extraOldtimer2[0];
+			$cadeauboninwisselen = $_POST['form12cadeaubon-inwisselen'];
+			$cadeaubonnummer = $_POST['form12cadeaubonnummer'];
+			$optiePepernotenroute = $_POST['form12pepernotenroute'];
+			$optieWinterWonderTocht = $_POST['form12winter-wondertocht'];
+			$optieElfstedentocht = $_POST['form12elfstedentocht'];
+			$optieMolentocht = $_POST['form12molentocht'];
+			$optieBloesemtocht = $_POST['form12bloesemtocht'];
+			$optieFortenroute = $_POST['form12fortenroute'];
+			
+	if ($companyName !== NULL){
+		$relationtypeValue = "COMPANY";
+
+			$fieldsCompany = array(
+			"identity" => 1,
+			"invoicesendby" => "EMAIL",
+			"invoiceemail" => $emailValue,
+			"email" => $emailValue,
+			"phone" => $phoneValue,
+			"relationtype" => "COMPANY",
+			"companyname" => $companyName,
+			"companyroles" => ["LEAD"],
+			"active" => true,
+			"customfield_avgakkoord" => true,
+			"invoicesendto" => "VISITINGADDRESS",
+			"invoiceaddress_companyname" => $companyName,
+			"invoiceaddress_attn" => "Administratie",
+			"visitingaddress_street" => $adresValue,
+			"visitingaddress_streetnumber" => $huisnrValue,
+			"visitingaddress_zipcode" => $postcodeValue,
+			"visitingaddress_city" => $plaatsValue,
+			"visitingaddress_country" => $landValue,
+			"customfield_benaderenper" => "E-mail",
+			);
+			
+			$batchresponse = $API->company_create($fieldsCompany);
+			$response = $batchresponse[0]['result'];
+			$company_id = $response["recordid"];
+			print_r($response);
+			
+			$fieldsContact = array(
+			"company" => $company_id,
+			"showoncompanycard" => true,
+			"active" => true,
+			"email" => $emailValue,
+			"phone" => $phoneValue,
+			"function" => "Contactpersoon",
+			"salutation" => $aanhefValue,
+			"initials" => "",
+			"firstname" => $voornaamValue,
+			"infix" => $tussenvoegselValue,
+			"lastname" => $achternaamValue,
+			);
+			
+			$batchresponse2 = $API->contact_create($fieldsContact);
+			$response2 = $batchresponse2[0]['result'];
+		
+	} else{
+		$relationtypeValue = "PRIVATEPERSON";
+		
+		$fieldsPrivate = array(
+			"identity" => 1,
+			"relationtype" => "PRIVATEPERSON",
+			"companyroles" => ["LEAD"],
+			"active" => true,
+			"customfield_avgakkoord" => true,
+			"customfields" => null,
+			"showoncompanycard" => true,
+			"email" => $emailValue,
+			"phone" => $phoneValue,
+			"salutation" => $aanhefValue,
+			"initials" => "",
+			"firstname" => $voornaamValue,
+			"customfield_voornaampartner" => $partnerValue,
+			"infix" => $tussenvoegselValue,
+			"lastname" => $achternaamValue,
+			"visitingaddress_street" => $adresValue,
+			"visitingaddress_streetnumber" => $huisnrValue,
+			"visitingaddress_zipcode" => $postcodeValue,
+			"visitingaddress_city" => $plaatsValue,
+			"visitingaddress_country" => $landValue,
+			"customfield_benaderenper" => "E-mail",
+			);
+			
+			$batchresponse = $API->company_create($fieldsPrivate);
+			$response = $batchresponse[0]['result'];
+			$company_id = $response["recordid"];
+			print_r($response);
+	}
+			
+	$hoeGevonden = $gevondenValue[0];
+	if ($hoeGevonden == "Anders" ){
+		$hoeGevonden = $anders;	
+	}
+			
+	// Tags gelegenheid
+	if ($gelegenheidPhotoboothKeuze == "Photobooth Feest"){ $photoboothSjabloon = 56;}
+	else if ($gelegenheidPhotoboothKeuze == "Photobooth Bruiloft"){ $photoboothSjabloon = 107;}
+	else if ($gelegenheidPhotoboothKeuze == "Photobooth Bedrijfsfeest"){ $photoboothSjabloon = 56;}
+			
+	if ($gelegenheidValue == "Trouwvervoer"){$tags = 6;}
+	else if ($gelegenheidValue == "Nostalgico Trouwvervoer"){$tags = 6;}
+	else if ($gelegenheidValue == "Trouwvervoer en Photobooth"){$tags = 6;$sjabloon = 57;$photoboothField = true;$starttijd = $starttijdPhotobooth;$eindtijd = $eindtijdPhotobooth;}
+	else if ($gelegenheidValue == "Photobooth"){
+		$tags = 4;$sjabloon = $photoboothSjabloon;$photoboothField = true;$starttijd = $starttijdPhotobooth;$eindtijd = $eindtijdPhotobooth;
+	}
+	else if ($gelegenheidValue == "Galavervoer"){$tags = 9;$sjabloon = 58;$starttijd = $starttijdGala;$eindtijd = $eindtijdGala;}
+	else if ($gelegenheidValue == "Dagje toeren"){$tags = 8;$sjabloon = 54;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Nostalgico Dagje toeren"){$tags = 8;$sjabloon = 225;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Groepsarrangement"){$tags = 10;$sjabloon = 59;$starttijd = $starttijdGroep;$eindtijd = $eindtijdGroep;}
+	else if ($gelegenheidValue == "Kamperen"){$tags = 11;$sjabloon = 53;$starttijd = "09:00 uur";$eindtijd = "18:00 uur";}
+	else if ($gelegenheidValue == "Zakelijk vervoer"){$tags = 5;$sjabloon = 147;$starttijd = $starttijdZakelijk;$eindtijd = $eindtijdZakelijk;}
+	else if ($gelegenheidValue == "Pepernoten route"){$tags = 8;$sjabloon = 181;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Herfsttocht"){$tags = 8;$sjabloon = 228;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Winter Wonder Tocht"){$tags = 8;$sjabloon = 182;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Elfstedentocht"){$tags = 8;$sjabloon = 184;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Molentocht"){$tags = 8;$sjabloon = 54;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Zwoele Zomertocht"){$tags = 8;$sjabloon = 186;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Escape room"){$tags = 8;$sjabloon = 244;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else if ($gelegenheidValue == "Bloesemtocht"){$tags = 8;$sjabloon = 185;$starttijd = "09:00 uur";$eindtijd = "17:00 uur";}
+	else {$tags = 5;}
+	
+	// Bepaal de dag van verhuur
+	$datumverhuur = str_replace(".","-",$huurdatum);
+	$einddatumhuur = str_replace(".","-",$einddatum);
+	
+	$dag_verhuur = date('l', strtotime($datumverhuur));
+	$datumverhuur = date("Y-m-d", strtotime($datumverhuur));
+	$einddatumhuur = date("Y-m-d", strtotime($einddatumhuur));
+	if (($gelegenheidValue == "Kamperen") or ($gelegenheidValue == "Zakelijk vervoer") or ($gelegenheidValue == "Dagje toeren") or ($gelegenheidValue == "Groepsarrangement") or ($gelegenheidValue == "Galavervoer") or ($gelegenheidValue == "Photobooth") or ($gelegenheidValue == "Pepernoten route") or ($gelegenheidValue == "Winter Wonder Tocht") or ($gelegenheidValue == "Herfsttocht") or ($gelegenheidValue == "Elfstedentocht") or ($gelegenheidValue == "Zwoele Zomertocht") or ($gelegenheidValue == "Molentocht") or ($gelegenheidValue == "Bloesemtocht") or ($gelegenheidValue == "Nostalgico Dagje toeren")){
+		$einddatumverhuur = $einddatumhuur;
+		$startdatumKamperen = new DateTime($datumverhuur);
+		$einddatumKamperen = new DateTime($einddatumverhuur);
+		$aantaldagenVerhuur = $startdatumKamperen->diff($einddatumKamperen);
+		$amountVerhuur = $aantaldagenVerhuur->days;
+	}
+	else {
+		$einddatumverhuur = $datumverhuur;
+		$amountVerhuur = 1;
+	}
+			
+	if ($dag_verhuur == "Monday"){ $huurdag = "maandag";}
+	else if ($dag_verhuur == "Tuesday"){ $huurdag = "dinsdag";}
+	else if ($dag_verhuur == "Wednesday"){ $huurdag = "woensdag";}
+	else if ($dag_verhuur == "Thursday"){ $huurdag = "donderdag";}
+	else if ($dag_verhuur == "Friday"){ $huurdag = "vrijdag";}
+	else if ($dag_verhuur == "Saturday"){ $huurdag = "zaterdag";}
+	else if ($dag_verhuur == "Sunday"){ $huurdag = "zondag";}
+	else { $huurdag == "zondag";}
+	
+	$datumverhuurtitel = str_replace(".","-",$huurdatum);
+	$datumtitel = ', '.$datumverhuurtitel;
+			
+	$naamOldtimer = $oldtimer.$oldtimerBus.$oldtimerCamper.$oldtimerToeren.$oldtimerKeuzeEscape.$nostalgico.$nostalgicoToeren;
+	if ($naamOldtimer == "Ford Mustang Cabrio Crème 65 (4 pers)"){
+		$naamOldtimer = "Ford Mustang Cabrio Crème '65 (4 pers)";
+	}
+	if ($naamOldtimer == "Ford Mustang Cabrio Blauw 67 (4 pers)"){
+		$naamOldtimer = "Ford Mustang Cabrio Blauw '67 (4 pers)";
+	}
+	$dagtarief = "dagtarief";
+
+	// Speciale datums
+	$specialedata = array("20.03.2020", "20.05.2020", "20.06.2020", "20.08.2020");
+	if (($gelegenheidValue == "Trouwvervoer") or ($gelegenheidValue == "Nostalgico Trouwvervoer")){
+		if (in_array($huurdatum, $specialedata)) {
+		$dag = "speciale datum";
+		}
+		else if (($huurdag == "maandag") or ($huurdag == "dinsdag") or ($huurdag == "woensdag")){
+			$dag = "ma-wo";
+		}
+		else if (($huurdag == "donderdag") or ($huurdag == "zaterdag") or ($huurdag == "zondag")){
+			$dag = "do-za-zo";
+		}
+		else if ($huurdag == "vrijdag"){
+			$dag = "vr";
+		}
+		else {$dag = "do-za-zo";}
+		
+	} else if ($gelegenheidValue == "Trouwvervoer en Photobooth"){
+		if (in_array($huurdatum, $specialedata)) {
+		$dag = "speciale datum";
+		}
+		else if (($huurdag == "maandag") or ($huurdag == "dinsdag") or ($huurdag == "woensdag")){
+			$dag = "ma-wo";
+		}
+		else if (($huurdag == "donderdag") or ($huurdag == "zaterdag") or ($huurdag == "zondag")){
+			$dag = "do-za-zo";
+		}
+		else if ($huurdag == "vrijdag"){
+			$dag = "vr";
+		}
+		else {$dag = "do-za-zo";}
+		
+	} else if ($gelegenheidValue == "Zakelijk vervoer"){
+		if (($huurdag == "maandag") or ($huurdag == "dinsdag") or ($huurdag == "woensdag") or ($huurdag == "donderdag")){
+			$dag = "ma-do";
+		}
+		else {$dag = "vr-zo";}
+		
+	} else if (($gelegenheidValue == "Dagje toeren") or ($gelegenheidValue == "Pepernoten route") or ($gelegenheidValue == "Herfsttocht") or ($gelegenheidValue == "Winter Wonder Tocht") or ($gelegenheidValue == "Elfstedentocht") or ($gelegenheidValue == "Bloesemtocht") or ($gelegenheidValue == "Molentocht") or ($gelegenheidValue == "Zwoele Zomertocht") or ($gelegenheidValue == "Nostalgico Dagje toeren") or ($gelegenheidValue == "Escape room")){
+		if (($huurdag == "maandag") or ($huurdag == "dinsdag") or ($huurdag == "woensdag") or ($huurdag == "donderdag")){
+			$dag = "ma-do";
+		}
+		else {$dag = "vr-zo";}
+		
+	} else {
+		if (($huurdag == "zaterdag") or ($huurdag == "zondag")){
+			$dag = "vr-zo";
+		}
+		else {$dag = "ma-do";}
+	}
+	
+	if (($gelegenheidPhotoboothKeuze == "Photobooth Feest") and ($naamOldtimer == "VW Bus Red Velvet T1 (8 pers)")){
+		$oldtimerValue = "Photobooth Feest Rode T1";
+	}
+	else if (($gelegenheidPhotoboothKeuze == "Photobooth Bruiloft") and ($naamOldtimer == "VW Bus Red Velvet T1 (8 pers)")){
+		$oldtimerValue = "Photobooth Bruiloft Rode T1";
+	}
+	else if (($gelegenheidPhotoboothKeuze == "Photobooth Bedrijfsfeest") and ($naamOldtimer == "VW Bus Red Velvet T1 (8 pers)")){
+		$oldtimerValue = "Photobooth Bedrijfsfeest Rode T1";
+	}
+	else if ($gelegenheidPhotoboothKeuze == "Photobooth Feest"){
+		$oldtimerValue = "Photobooth Feest";
+	}
+	else if ($gelegenheidPhotoboothKeuze == "Photobooth Bruiloft"){
+		$oldtimerValue = "Photobooth Bruiloft";
+	}
+	else if ($gelegenheidPhotoboothKeuze == "Photobooth Bedrijfsfeest"){
+		$oldtimerValue = "Photobooth Bedrijfsfeest";
+	}
+	else if ($gelegenheidValue == "Escape room"){
+		if ($aantalPersonen >= "5"){
+		$oldtimerValue = "Combinatie Escape Room particulier (8p) ".$dag;
+		}
+		else {
+			$oldtimerValue = "Combinatie Escape Room particulier (4p) ".$dag;
+		}
+	}
+	else {
+		$oldtimerValue = $naamOldtimer." ".$dagtarief." ".$dag;
+		if ($naamOldtimer == "Eigen auto"){
+			$oldtimerValue = "Arrangement Escape Room particulier eigen vervoer (losse kit)";
+		}
+	}
+
+	$filters = array(
+		array(
+			"field" => "product.name",
+			"operator" => "like",
+			"value" => $oldtimerValue
+		),
+		array(
+			"field" => "product.tags",
+			"operator" => "equals",
+			"value" => $tags
+		)
+	);
+	
+
+	$batchresponse = $API->product_getone($filters);
+	$response = $batchresponse[0]['result'];
+	$productnummer = $response['rows'][0]['number'];
+	$product_id = $response['rows'][0]['id'];
+	$sellingprice = $response['rows'][0]['sellingprice'];
+	$buyingprice = $response['rows'][0]['buyingprice'];
+	$beschrijving = $response['rows'][0]['description'];
+	print_r($response);
+			
+	// Checkboxes	
+	if ($haalservice == "Inclusief haalservice"){
+		$haalserviceField = true;
+	}
+	if ($rallyspeurtocht == "Inclusief Rally Speurtocht "){
+		$rallyspeurtochtField = true;
+	}
+	if ($escapevroom == "Inclusief Escape Vroom"){
+		$escapevroomField = true;
+	}
+	if ($gelegenheidValue == "Escape room"){
+		$escapevroomField = true;
+	}
+	if ($brengservice == "Inclusief brengservice"){
+		$brengserviceField = true;
+	}
+	if ($chauffeur == "Inclusief chauffeur"){
+		$chauffeurField = true;
+	}
+	if ($photobooth == "Inclusief photobooth"){
+		$photoboothField = true;
+	}
+	if ($puzzeltocht == "Inclusief puzzeltocht"){
+		$puzzeltochtField = true;
+	}
+	if ($highteaarrangement == "Inclusief High Tea arrangement"){
+		$highteaarrangementField = true;
+	}
+	if ($picknickarrangement == "Inclusief Picknick arrangement"){
+		$picknickarrangementField = true;
+	}
+	if ($pannenkoekeneten == "Inclusief Pannenkoeken eten"){
+		$pannenkoekenetenField = true;
+	}
+	if ($fotoshoot == "Inclusief Fotoshoot"){
+		$fotoshootField = true;
+	}
+	if ($vergaderarrangement == "Vergaderarrangement"){
+		$vergaderarrangementField = true;
+	}
+	if ($sinterklaasarrangement == "Sinterklaasarrangement"){
+		$sinterklaasarrangementField = true;
+	}
+	if ($kerstarrangement == "Kerstarragement"){
+		$kerstarrangementField = true;
+	}
+	if ($nieuwjaarsarrangement == "Nieuwjaarsarrangement"){
+		$nieuwjaarsarrangementField = true;
+	}
+	if ($eerderophalen == "Avond van tevoren ophalen"){
+		$eerderophalenField = true;
+	}
+	if ($ontvangst == "Ontvangst met hapje en drankje"){
+		$ontvangstField = true;
+	}
+	if ($terugkomst == "Catering bij terugkomst"){
+		$terugkomstField = true;
+	}
+	if ($openavond == "Open avond"){
+		$openavondField = true;
+		$openavondDatumField = $openavondDatum;
+		$openavondDatumField = date("Y-m-d", strtotime($openavondDatumField));
+	}
+	if ($cadeauboninwisselen == "Cadeaubon"){
+		$cadeaubon = $cadeaubonnummer;
+	}
+	if ($optiePepernotenroute == "Inclusief Pepernotenroute"){
+		$optiePepernotenrouteField = true;
+	}
+	if ($optieWinterWonderTocht == "Inclusief Winter Wondertocht"){
+		$optieWinterWonderTochtField = true;
+	}
+	if ($optieElfstedentocht == "Inclusief Elfstedentocht"){
+		$optieElfstedentochtField = true;
+	}
+	if ($optieMolentocht == "Inclusief Molentocht"){
+		$optieMolentochtField = true;
+	}
+	if ($optieBloesemtocht == "Inclusief Bloesemtocht"){
+		$optieBloesemtochtField = true;
+	}
+	if ($optieFortenroute == "Inclusief Fortenroute"){
+		$optieFortenrouteField = true;
+	}
+			
+	// Sjabloon bij trouwvervoer 
+	if (($gelegenheidValue == "Trouwvervoer") or ($gelegenheidValue == "Nostalgico Trouwvervoer")){
+		if ($oldtimer == "VW Bus Blue Ocean (8 pers)"){$sjabloon = 73;}
+		else if ($oldtimer == "VW Bus Sweet Minty (8 pers)"){$sjabloon = 74;}
+		else if ($oldtimer == "VW Bus Minty (8 pers)"){$sjabloon = 75;}
+		else if ($oldtimer == "VW Bus Minty 2.0 (8 pers)"){$sjabloon = 76;}
+		else if ($oldtimer == "VW Bus Miss White (8 pers)"){$sjabloon = 77;}
+		else if ($oldtimer == "VW Bus Miss Peach (8 pers)"){$sjabloon = 78;}
+		else if ($oldtimer == "VW Bus Miss Sunshine (8 pers)"){$sjabloon = 79;}
+		else if ($oldtimer == "VW Bus Sandy (8 pers)"){$sjabloon = 80;}
+		else if ($oldtimer == "VW Camper Mr. Sandman (5 pers - 4 slaapplaatsen)"){$sjabloon = 81;}
+		else if ($oldtimer == "VW Camper Yellow (5 pers - 4 slaapplaatsen)"){$sjabloon = 83;}
+		else if ($oldtimer == "VW Camper Mr. Olive (5 pers - 4 slaapplaatsen)"){$sjabloon = 85;}
+		else if ($oldtimer == "VW Camper Mr. Orange (5 pers - 4 slaapplaatsen)"){$sjabloon = 88;}
+		else if ($oldtimer == "VW Camper Mr. Brown (5 pers - 4 slaapplaatsen)"){$sjabloon = 86;}
+		else if ($oldtimer == "VW Camper Mr. Aqua (5 pers - 4 slaapplaatsen)"){$sjabloon = 87;}
+		else if ($oldtimer == "VW Kever Cabrio Miss White (4 pers)"){$sjabloon = 90;}
+		else if ($oldtimer == "VW Kever Cabrio Miss Black & White (4 pers)"){$sjabloon = 91;}
+		else if ($oldtimer == "VW Kever Cabrio Diamond Blue (4 pers)"){$sjabloon = 93;}
+		else if ($oldtimer == "VW Kever Cabrio Lady in red (4 pers)"){$sjabloon = 94;}
+		else if ($oldtimer == "VW Kever Cabrio Minty (4 pers)"){$sjabloon = 95;}
+		else if ($oldtimer == "VW Kever Pink Lady (4 pers)"){$sjabloon = 96;}
+		else if ($oldtimer == "VW Kever Black Beauty (4 pers)"){$sjabloon = 98;}
+		else if ($oldtimer == "Porsche Speedster 356 (2 pers)"){$sjabloon = 99;}
+		else if ($oldtimer == "Porsche 911 Cabrio (2 pers)"){$sjabloon = 100;}
+		else if ($oldtimer == "Porsche 911 Coupé (2 pers)"){$sjabloon = 188;}
+		else if ($oldtimer == "MG B (2 pers)"){$sjabloon = 101;}
+		else if ($oldtimer == "MG B Roadster (2 pers)"){$sjabloon = 101;}
+		else if ($oldtimer == "Burton 2CV rood (2 pers)"){$sjabloon = 103;}
+		else if ($oldtimer == "Ford Mustang Cabrio rood (4 pers)"){$sjabloon = 102;}
+		else if ($oldtimer == "Ford Mustang Cabrio Crème 65 (4 pers)"){$sjabloon = 197;}
+		else if ($oldtimer == "Ford Mustang Cabrio Blauw 67 (4 pers)"){$sjabloon = 189;}
+		else if ($oldtimer == "Ford Mustang Coupé Blauw (4 pers)"){$sjabloon = 196;}
+		else if ($oldtimer == "Ford Mustang Cabrio lichtblauw (4 pers)"){$sjabloon = 103;}
+		else if ($oldtimer == "Mini Cooper (4 pers)"){$sjabloon = 105;}
+		else if ($oldtimer == "Citroen 2 CV (4 pers)"){$sjabloon = 106;}
+		else if ($oldtimer == "VW Bus Red Velvet T1 (8 pers)"){$sjabloon = 24;}
+		else if ($oldtimer == "VW Bus Blue Sky T1 (8 pers)"){$sjabloon = 183;}
+		else if ($oldtimer == "VW Bus Mr. Pistache T1 (8 pers)"){$sjabloon = 187;}
+		else if ($oldtimer == "VW Bus Blue Lagoon T1 (8 pers)"){$sjabloon = 230;}
+		else if ($oldtimer == "VW Bus Seattle (8 pers)"){$sjabloon = 97;}
+		else if ($oldtimer == "VW Bus Mr Woodstock (8 pers)"){$sjabloon = 227;}
+		else if ($oldtimer == "BMW Z4 (2 pers)"){$sjabloon = 221;}
+		else if ($oldtimer == "Porsche Boxster (2 pers)"){$sjabloon = 222;}
+		else if ($oldtimer == "Jaguar F-type Wit (2 pers)"){$sjabloon = 223;}
+		else if ($oldtimer == "Jaguar F-type Wit 2.0 (2 pers)"){$sjabloon = 224;}
+		else {$sjabloon = 24;}
+	}
+	
+	// id 95598 = Thessa  id 95599 = Roel  id 100 = Nadia
+	if (($gelegenheidValue == "Zakelijk vervoer") or ($gelegenheidValue == "Groepsarrangement")){
+		$accountmanagerOffer = 95599;
+		$accountmanager2Offer = 95598;
+	} else{
+		$accountmanagerOffer = 95598;
+		$accountmanager2Offer = 100;
+		$accountmanager3Offer = 103786;
+	}
+			
+	if ($openavondFormValue == "Offerte Open Avond"){
+		$openavondFormValue = "Offerteaanvraag tijdens Open Avond";
+	} else if ($openavondFormValue == "Offerte Open Avond Socials"){
+		$openavondFormValue = "Offerteaanvraag via Social Media";
+	} else{
+		$openavondFormValue = "Offerteaanvraag website";
+	}
+	
+	if ($startlocatie == ""){
+		$startlocatie = "Hoge Giessen 9A, Hoogblokland";
+	}
+	if ($eindlocatie == ""){
+		$eindlocatie = "Hoge Giessen 9A, Hoogblokland";
+	}
+			
+	// Offerte maken
+	$fieldsOffer = array(
+		"company" => $company_id,
+		"template" => $sjabloon,
+		"name" => $naamOldtimer.$gewenstekleur2cv.$datumtitel,
+		"phase" => 1,
+		"customfield_huurdatum" => $datumverhuur,
+		"customfield_huurdatumtot" => $einddatumverhuur,
+		"customfield_starttijdverhuur" => $starttijd,
+		"customfield_startlocatie" => $startlocatie,
+		"customfield_eindtijdverhuur" => $eindtijd,
+		"customfield_eindlocatie" => $eindlocatie,
+		"customfield_oldtimer" => $naamOldtimer,
+		"customfield_gelegenheid" => $gelegenheidValue,
+		"customfield_website" => $referentie,
+		"customfield_haalservice" => $haalserviceField,
+		"customfield_brengservice" => $brengserviceField,
+		"customfield_rallyspeurtocht" => $rallyspeurtochtField,
+		"customfield_escaperoom" => $escapevroomField,
+		"customfield_chauffeur" => $chauffeurField,
+		"customfield_photobooth" => $photoboothField,
+		"customfield_puzzeltocht" => $puzzeltochtField,
+		"customfield_highteaarrangement" => $highteaarrangementField,
+		"customfield_picknickarrangement" => $picknickarrangementField,
+		"customfield_pannenkoekeneten" => $pannenkoekenetenField,
+		"customfield_eerderophalen" => $eerderophalenField,
+		"customfield_fotoshoot" => $fotoshootField,
+		"customfield_pepernotenroute" => $optiePepernotenrouteField,
+		"customfield_winterwondertocht" => $optieWinterWonderTochtField,
+		"customfield_elfstedentocht" => $optieElfstedentochtField,
+		"customfield_molentocht" => $optieMolentochtField,
+		"customfield_bloesemtocht" => $optieBloesemtochtField,
+		"customfield_fortenroute" => $optieFortenrouteField,
+		"customfield_waaromdagjetoeren" => $waaromDagjeToeren,
+		"customfield_aantalpersonen" => $aantalPersonen,
+		"customfield_vergaderarrangement" => $vergaderarrangementField,
+		"customfield_sinterklaasarrangement" => $sinterklaasarrangementField,
+		"customfield_kerstarrangement" => $kerstarrangementField,
+		"customfield_nieuwjaarsarrangement" => $nieuwjaarsarrangementField,
+		"customfield_wierijdtbijgalavervoer" => $wierijdt,
+		"customfield_dagstartdatum" => $huurdag,
+		"customfield_hoehebbenjullieonsgevonden" => $hoeGevonden,
+		"employees" => [$accountmanagerOffer,$accountmanager2Offer,$accountmanager3Offer],
+		"customfield_ontvangst" => $ontvangstField,
+		"customfield_terugkomst" => $terugkomstField,
+		"customfield_opmerkingendoorklant" => $notesValue,
+		"customfield_openavond" => $openavondField,
+		"customfield_datumopenavond" => $openavondDatumField,
+		"customfield_aleerderofferteontvangen" => $offerteontvangenValue,
+		"customfield_cadeaubonnummer" => $cadeaubon,
+		"customfield_definitieveboeking" => $definitiefboekenValue,
+		"customfield_offerteaanvraag" => $openavondFormValue,
+		"customfield_extraoldtimer" => $extraOldtimerValue,
+		"customfield_extraoldtimer2" => $extraOldtimer2Value,
+		"validfor" => 3,
+		"tags" =>[$tags],
+		"offerlines" => array(
+			array(
+				"product" => $product_id,
+				"amount" => 1,
+				"invoicebasis" => "FIXED",
+				"sellingprice" => $sellingprice,
+				"discount" => 0,
+				"buyingprice" => $buyingprice,
+				"description" => $beschrijving,
+			)
+	
+		),
+
+	);
+	
+			
+	$responses = $API->offer_create($fieldsOffer);
+	$responseOffer = $responses[0]['result'];
+	$offer_id = $responseOffer["recordid"];
+		
+		}
+		
+		
+		
+		return true;
+	}
+}

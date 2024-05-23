@@ -1,0 +1,170 @@
+@use '../variables' as *;
+.gform_previous_button {
+    display: none;
+}
+.choiceproduct{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 16px;
+    align-items: center;
+    margin-top: 16px;
+    flex-direction: column-reverse;
+    @media screen and (min-width: $breakpoint-tablet) {
+        flex-direction: row-reverse;
+    }
+    p{
+        font-family: 'fontleroybrownregular', Arial;
+        font-size: 300%;
+        font-weight: normal;
+        line-height: 100%;
+        text-shadow: 1px 1px #c2bfb5;
+    }
+    img{
+        position: relative;
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 5px solid #fff;
+        -moz-box-shadow: 0px 0px 25px #c2bfb5;
+        -webkit-box-shadow: 0px 0px 25px #c2bfb5;
+        -o-box-shadow: 0px 0px 25px #c2bfb5;
+        -khtml-box-shadow: 0px 0px 25px #c2bfb5;
+        box-shadow: 0px 0px 25px #c2bfb5;
+        image-rendering: optimizeQuality;
+        -ms-interpolation-mode: bicubic;
+        rotate: -2deg;
+        max-width: 320px;
+    }
+}
+.gform-theme--api, .gform-theme--foundation {
+    --gf-form-gap-y: 24px;
+}
+.gform_wrapper {
+    .gform_required_legend{
+        display: none;
+    }
+    .gform_fields {
+    row-gap: 15px;
+    }
+    --gf-color-primary: #{$accent} !important;
+    --gf-form-gap-y: 16px  !important;;
+    .gfield--type-section{
+        border-block-end: none;
+        padding-block-end: 0;
+        margin-top: 16px;
+        h3{
+            font-family: "fontleroybrownregular", Arial;
+            font-size: 300%;
+            font-weight: normal;
+            line-height: 100%;
+            text-shadow: 1px 1px #c2bfb5;
+            padding: 0;
+            margin: 0;
+            color: steelblue;
+        }
+    }
+}
+
+.offerteform{
+    .fields{
+        margin-bottom: 16px;
+        display: flex;
+        gap: 16px;
+        flex-direction: column;
+    }
+    .section{
+        margin-top: 16px;
+    }
+    .field{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        ul.formlist{
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding:0;
+            flex-direction: column;
+            li{
+                margin: 0;
+                padding: 0;
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+        }
+        i{
+            display: block;
+            margin-top: 4px;
+            & + *{
+                margin-top: 16px !important;
+            }
+        }
+        button, input {
+            overflow: visible;
+        }
+        button, input, optgroup, select, textarea {
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 1.5;
+            margin: 0;
+        }
+        label{
+            margin-bottom: 8px;
+        }
+        input[type=date], input[type=email], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=url], select, textarea {
+            width: 100%;
+            border: 1px solid #666;
+            border-radius: 3px;
+            padding: 0.5rem 1rem;
+            transition: all .3s;
+            min-height: 32px;
+            max-width: 640px;
+            & + label{
+                margin-top: 4px;
+                margin-bottom: 0;
+                opacity: 0.6;
+            }
+        }
+        input[type=date]{
+            max-width: 320px;
+        }
+        .subfields{
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+        }
+    }
+}
+body.loading{
+    position: relative;
+    &:before{
+        position: fixed;
+        z-index: 1000;
+        display: block;
+        content: '';
+        top: 0;
+        left: 0;
+        background: rgba(255,255,255,0.3);
+        width: 100vw;
+        height: 100vh;
+    }
+    &:after{
+        position: fixed;
+        z-index: 1001;
+        content: '';
+        top: calc(50% - 8px);
+        left: 50%;
+        border: 0.2rem solid #f4f4f4; 
+        border-top: 0.2rem solid #000; 
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        animation: spin 2s linear infinite;
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+    }
+}
