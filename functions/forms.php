@@ -193,7 +193,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 			
 			$tags = array();
 			
-			$tags[] = 162;
+			$tags[] = get_field('tag_website', 'options');
 
 			$oldtimername = $postitem->post_title;
 			if(rgar( $entry, $entryfields['starttijdverhuur'] )):
@@ -289,9 +289,11 @@ function steefs_set_post_to_api( $entry, $form ) {
 				'customfield_gelegenheid' => $gelegenheid,
 				'customfield_extraoldtimer' => rgar( $entry, $entryfields['extra_oldtimer_1'] ),
 				'customfield_extraoldtimer2' => rgar( $entry, $entryfields['extra_oldtimer_2'] ),
+				'customfield_clientid' => rgar( $entry, $entryfields['clientid'] ),
 				'description' => '',
 				'tags' => $tags
 			);
+			
 			if($extra_opties):
 			foreach($extra_opties as $extra_optie):
 				$fields['customfield_' . $extra_optie] = 1;

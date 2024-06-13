@@ -25,6 +25,10 @@ jQuery(document).ready(function ($) {
 			return letter.toUpperCase();
 		}))
    });
+   var clientid = get_ga_clientid();
+   $(".clientid input").val(clientid);
+
+   console.log(clientid);
    $(".postcode input").mask("9999 SS",{clearIfNotMatch: true,onComplete:function (value, event) {event.currentTarget.value = value.toUpperCase();}});
    $('.huisnummer input, .postcode input').change(function(){
     var formid = jQuery(".gform_wrapper").attr("id");
@@ -74,3 +78,14 @@ jQuery(document).ready(function ($) {
 
 });
 });
+
+function get_ga_clientid() {
+    var cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+      var splitCookie = el.split('=');
+      var key = splitCookie[0].trim();
+      var value = splitCookie[1];
+      cookie[key] = value;
+    });
+  return cookie["_ga"].substring(6);
+  }
