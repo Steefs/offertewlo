@@ -75,13 +75,15 @@ function steefs_set_post_to_api( $entry, $form ) {
 		endif;
 		$companyid = steefs_get_company($email);
 		if($companyid == false):
+			$phone = phonize(rgar( $entry, $entryfields['telefoonnummer'] ), rgar( $entry, $entryfields['land'] ));
+
 			if($business == 1):
 				$fields = array(
 					'identity' => 1,
 					'invoicesendby' => 'EMAIL',
 					'invoiceemail' => $email,
 					'email' => $email,
-					'phone' => rgar( $entry, $entryfields['telefoonnummer'] ),
+					'phone' => $phone,
 					'relationtype' => 'COMPANY',
 					'companyname' => rgar( $entry, $entryfields['bedrijfsnaam'] ),
 					'companyroles' => array('LEAD'),
@@ -101,7 +103,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				$fields = array(
 					'companyname' => '',
 					'email' => $email,
-					'phone' => rgar( $entry, $entryfields['telefoonnummer'] ),
+					'phone' => $phone,
 					'relationtype' => 'PRIVATEPERSON',
 					'companyroles' => ['LEAD'],
 					'active' => true,
@@ -135,12 +137,14 @@ function steefs_set_post_to_api( $entry, $form ) {
 			endif;
 			if($companyid):
 				if($business == 1):
+
+					$phone = phonize(rgar( $entry, $entryfields['telefoonnummer'] ), rgar( $entry, $entryfields['land'] ));
 					$fieldsContact = array(
 						"company" => $companyid,
 						"showoncompanycard" => true,
 						"active" => true,
 						"email" => $email,
-						'phone' => rgar( $entry, $entryfields['telefoonnummer'] ),
+						'phone' => $phone,
 						"function" => "Contactpersoon",
 						"initials" => "",
 						"firstname" => rgar( $entry, '3.3' ),
@@ -765,8 +769,23 @@ function carsquery_elementor( $query ) {
 add_action( 'elementor/query/carsquery', 'carsquery_elementor' );
 
 add_filter( 'gform_field_value_uniqitemid', 'uniqitemgenerate' );
+
 function uniqitemgenerate( $value ) {
 	$date = new DateTime();
 
 	return $date->format('Hdm') . uniqid('oid');
+}
+
+function phonize($phoneNumber, $country) {
+    if($country):
+    $countryCodes = array(
+        'Nederland' => '+31',
+        'België' => '+32',
+        'Duitsland' => '+49'
+    );
+    
+    return preg_replace('/[^0-9+]/', '', preg_replace('/^0/', $countryCodes[$country], $phoneNumber));
+    else:
+        return $phoneNumber;
+    endif;
 }
