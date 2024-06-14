@@ -20,9 +20,9 @@ $gutter: 8 !default;
 $gutter-base: 20px !default;
 
 // Colors
-$primary: #00293e;
-$accent: #f07a38  !default;
-$secondary: #020202 !default;
+$primary: var(--e-global-color-primary)  !default;
+$accent: var(--e-global-color-accent)  !default;
+$secondary:  var(--e-global-color-secondary) !default;
 $support: #D9DAE9 !default;
 
 $color-error: #d9534f !default;

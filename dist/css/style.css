@@ -45,7 +45,7 @@
 }
 
 .gform_wrapper {
-  --gf-color-primary: #f07a38 !important;
+  --gf-color-primary: var(--e-global-color-accent) !important;
   --gf-form-gap-y: 16px !important;
 }
 .gform_wrapper .gform_required_legend {

@@ -43,12 +43,14 @@ function steefs_get_post_by_item($item = false)
 }
 function steefs_check_all_codes($item)
 {   
-    $args = array(
-        'meta_key' => 'uniqid',
-        'meta_value' => $item,
-    );
-    $postitem = steefs_get_post_by_meta($args );
-
+    $postitem = steefs_get_post_id_by_title($item);
+    if(!$postitem):
+        $args = array(
+            'meta_key' => 'uniqid',
+            'meta_value' => $item,
+        );
+        $postitem = steefs_get_post_by_meta($args );
+    endif;
     if(!$postitem):
         $args = array(
             'meta_key' => 'uniqid_ex',
@@ -99,3 +101,25 @@ function steefs_get_post_by_meta( $args = array() )
 }
 
 
+function steefs_get_post_id_by_title( $title = '' ) {
+   
+
+   
+    // grab page - polylang will take take or language selection ##
+    $args = array(
+        'post_type'         => array('arrangement','auto'),
+        'posts_per_page'    => '1',
+        'title'                  => $title    
+        );
+   
+    // run query ##
+    $posts = get_posts( $args );
+    // check results ##
+    if ( ! $posts || is_wp_error( $posts ) ) return false;
+   
+    // test it ##
+    #pr( $posts[0] );
+   
+    // kick back results ##
+    return $posts[0];
+}
