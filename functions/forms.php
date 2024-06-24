@@ -278,7 +278,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				'template' => (int)$template,
 				'name' => $oldtimername . ', ' .  $huurdatumvan,
 				'company' => $companyid,
-				'signingenabled' = true,
+				'signingenabled' => true,
 				'customfield_huurdatum' => $huurdatumvanen,
 				'customfield_huurdatumtot' => $huurdatumtot,
 				'customfield_starttijdverhuur' => $starttijdverhuur,
