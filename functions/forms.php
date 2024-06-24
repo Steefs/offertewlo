@@ -196,7 +196,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 			$extra_oldtimers = steefs_entry_checkbox( $form, $entryfields['extra_autos'], $entry );
 			
 			
-			$tagwebsite = get_field('tag_website', 'options');
+			$tagwebsite = (int)get_field('tag_website', 'options');
 
 			$oldtimername = $postitem->post_title;
 			if(rgar( $entry, $entryfields['starttijdverhuur'] )):
@@ -655,6 +655,7 @@ function mark_entry_read( $form, $entry ){
 	echo rgar( $entry, $entryfields['huurdatum'] );
 	$itemid = rgar( $entry, $entryfields['itemid'] );
 	$email = rgar( $entry, $entryfields['email'] );
+
 	//var_dump(steefs_entry_checkbox( $form, $entryfields['extra_opties'], $entry ));
 	//steefs_set_post_to_api( $entry, $form );
 
@@ -695,6 +696,7 @@ function mark_entry_read( $form, $entry ){
 		endforeach;
 		//var_dump($response['rows']);
 	echo $email;
+
 }
 
 function steefs_entry_checkbox( $form, $entryid, $entry ){
