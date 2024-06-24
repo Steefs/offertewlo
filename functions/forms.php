@@ -196,7 +196,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 			$extra_oldtimers = steefs_entry_checkbox( $form, $entryfields['extra_autos'], $entry );
 			
 			
-			$tags = [get_field('tag_website', 'options')];
+			$tagwebsite = [get_field('tag_website', 'options')];
 
 			$oldtimername = $postitem->post_title;
 			if(rgar( $entry, $entryfields['starttijdverhuur'] )):
@@ -227,7 +227,6 @@ function steefs_set_post_to_api( $entry, $form ) {
 						$gelegenheid = get_field('gelegenheid', $arrangementitem->ID);
 					endif;
 				endif;
-				$tags[] = 6;
 				$tag = 6;
 				if(get_field('templateid', $postitem->ID)):
 					$template = get_field('templateid', $postitem->ID);
@@ -242,19 +241,15 @@ function steefs_set_post_to_api( $entry, $form ) {
 						$gelegenheid = get_the_title($arrangementitem->ID);
 					endif;
 					if(get_field('tag_id', $arrangementitem->ID)):
-						$tags[] = get_field('tag_id', $arrangementitem->ID);
 						$tag = get_field('tag_id', $arrangementitem->ID);
 					else:
-						$tags[] = 8;
 						$tag = 8;
 					endif;
 				elseif($business):
 					$gelegenheid = 'Zakelijk vervoer';
-					$tags[] = 5;
 					$tag = 5;
 				else:
 					$gelegenheid = 'Dagje toeren';
-					$tags[] = 8;
 					$tag = 8;
 				endif;
 			endif;
@@ -295,7 +290,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				'customfield_extraoldtimer2' => rgar( $entry, $entryfields['extra_oldtimer_2'] ),
 				'customfield_clientid' => rgar( $entry, $entryfields['clientid'] ),
 				'description' => '',
-				'tags' =>  $tags
+				'tags' =>  [$tagwebsite, $tag]
 			);
 			
 			if($extra_opties):
