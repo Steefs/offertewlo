@@ -295,7 +295,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				'customfield_extraoldtimer2' => rgar( $entry, $entryfields['extra_oldtimer_2'] ),
 				'customfield_clientid' => rgar( $entry, $entryfields['clientid'] ),
 				'description' => '',
-				'tags' => $tags
+				'tags' => [implode(",", $tags)]
 			);
 			
 			if($extra_opties):
