@@ -196,7 +196,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 			$extra_oldtimers = steefs_entry_checkbox( $form, $entryfields['extra_autos'], $entry );
 			
 			
-			$tagwebsite = [get_field('tag_website', 'options')];
+			$tagwebsite = get_field('tag_website', 'options');
 
 			$oldtimername = $postitem->post_title;
 			if(rgar( $entry, $entryfields['starttijdverhuur'] )):
