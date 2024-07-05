@@ -344,7 +344,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				);
 				$productresponse = $api->product_getone($productfilters);
 				$productresponseresult = $productresponse[0]['result'];
-				$offerline = array();
+				$offerlines = array();
 				if($productresponseresult['rows']):
 					$productnummer = $productresponseresult['rows'][0]['number'];
 					$product_id = $productresponseresult['rows'][0]['id'];
@@ -394,6 +394,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 						);
 					endif;
 				endif;
+
 				if($offerlines):
 					$fields['offerlines'] = $offerlines;
 				endif;
