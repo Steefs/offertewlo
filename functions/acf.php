@@ -17,7 +17,6 @@ function my_acf_cpt_save_folder( $path ) {
 }
 add_filter( 'acf/settings/save_json/type=acf-post-type', 'my_acf_cpt_save_folder' );
 
-
 function my_acf_ctax_save_folder( $path ) {
     return get_stylesheet_directory() . '/acf-json/taxonomy'; 
 }
