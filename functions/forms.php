@@ -541,7 +541,12 @@ function yid_populate_trans_label( $form ) {
 	$extra_oldtimer_2 = $entryfields['extra_oldtimer_2'];
 	$keuze_oldtimer = $entryfields['keuze_oldtimer'];
 	$keuze_arrangementid = $entryfields['keuze_arrangement'];
-
+	if (array_key_exists('keuze_arrangement', $search_array)):
+		$keuze_arrangementid = $entryfields['keuze_arrangement'];
+	else:
+		$keuze_arrangementid = 0;
+	endif;
+	
 
 			$argsarr = array(
 				'post_type'        => 'arrangement',
