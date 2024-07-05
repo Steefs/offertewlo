@@ -325,7 +325,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				elseif($gelegenheid_photobooth == 'Bruiloft en trouwvervoer'):
 					$oldtimerValue = 'Photobooth in combinatie met Trouwvervoer';
 				endif;
-				
+
 				if($oldtimerValue == 'Photobooth in combinatie met Trouwvervoer'):
 					$oldtimerValue2 = $grippnaam ." dagtarief " . $dag;
 				endif;
@@ -361,6 +361,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 							"description" => $beschrijving,
 					);
 				endif;
+				
 				if($oldtimerValue2):
 					$productfilters = array(
 						array(
