@@ -36,8 +36,20 @@ function steefs_set_post_to_api( $entry, $form ) {
 	$arrid = rgar( $entry, $entryfields['arrid'] );
 	$business = rgar( $entry, $entryfields['business'] );
 	$gelegenheid_photobooth = rgar( $entry, $entryfields['gelegenheid_photobooth'] );
+	$gelegenheid = false;
 	if($gelegenheid_photobooth == 'Bedrijfsfeest'):
 		$business = 1;
+		$gelegenheid = 'Photobooth';
+		$tag = 4;
+	elseif($gelegenheid_photobooth == 'Feest'):
+		$gelegenheid = 'Photobooth';
+		$tag = 4;
+	elseif($gelegenheid_photobooth == 'Bruiloft'):
+		$gelegenheid = 'Photobooth';
+		$tag = 4;
+	elseif($gelegenheid_photobooth == 'Bruiloft en trouwvervoer'):
+		$gelegenheid = 'Trouwvervoer en Photobooth';
+		$tag = 4;
 	endif;
 	$email = rgar( $entry, $entryfields['email'] );
 	$company_id = false;
@@ -248,7 +260,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				elseif($business):
 					$gelegenheid = 'Zakelijk vervoer';
 					$tag = 5;
-				else:
+				elseif(!$gelegenheid):
 					$gelegenheid = 'Dagje toeren';
 					$tag = 8;
 				endif;
