@@ -305,7 +305,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 			endif;
 			if($dag):
 				$grippnaam = get_field('gripp_naam', $postitem->ID);
-				
+				$oldtimerValue2 = false;
 				if($arrangementitem):
 					if(get_field('gripp_naam', $arrangementitem->ID)):
 						$oldtimerValue = get_field('gripp_naam', $arrangementitem->ID);
@@ -325,7 +325,10 @@ function steefs_set_post_to_api( $entry, $form ) {
 				elseif($gelegenheid_photobooth == 'Bruiloft en trouwvervoer'):
 					$oldtimerValue = 'Photobooth in combinatie met Trouwvervoer';
 				endif;
-
+				
+				if($oldtimerValue == 'Photobooth in combinatie met Trouwvervoer'):
+					$oldtimerValue2 = $grippnaam ." dagtarief " . $dag;
+				endif;
 				
 				$productfilters = array(
 					array(
@@ -341,14 +344,14 @@ function steefs_set_post_to_api( $entry, $form ) {
 				);
 				$productresponse = $api->product_getone($productfilters);
 				$productresponseresult = $productresponse[0]['result'];
+				$offerline = array();
 				if($productresponseresult['rows']):
 					$productnummer = $productresponseresult['rows'][0]['number'];
 					$product_id = $productresponseresult['rows'][0]['id'];
 					$sellingprice = $productresponseresult['rows'][0]['sellingprice'];
 					$buyingprice = $productresponseresult['rows'][0]['buyingprice'];
 					$beschrijving = $productresponseresult['rows'][0]['description'];
-					$fields['offerlines'] = array(
-						array(
+					$offerlines[] = array(
 							"product" => $product_id,
 							"amount" => 1,
 							"invoicebasis" => "FIXED",
@@ -356,10 +359,43 @@ function steefs_set_post_to_api( $entry, $form ) {
 							"discount" => 0,
 							"buyingprice" => $buyingprice,
 							"description" => $beschrijving,
-						)
 					);
 				endif;
-
+				if($oldtimerValue2):
+					$productfilters = array(
+						array(
+							"field" => "product.name",
+							"operator" => "like",
+							"value" => $oldtimerValue2
+						),
+						array(
+							"field" => "product.tags",
+							"operator" => "equals",
+							"value" => $tag
+						)
+					);
+					$productresponse = $api->product_getone($productfilters);
+					$productresponseresult = $productresponse[0]['result'];
+					if($productresponseresult['rows']):
+						$productnummer = $productresponseresult['rows'][0]['number'];
+						$product_id = $productresponseresult['rows'][0]['id'];
+						$sellingprice = $productresponseresult['rows'][0]['sellingprice'];
+						$buyingprice = $productresponseresult['rows'][0]['buyingprice'];
+						$beschrijving = $productresponseresult['rows'][0]['description'];
+						$offerlines[] = array(
+							"product" => $product_id,
+							"amount" => 1,
+							"invoicebasis" => "FIXED",
+							"sellingprice" => $sellingprice,
+							"discount" => 0,
+							"buyingprice" => $buyingprice,
+							"description" => $beschrijving,
+						);
+					endif;
+				endif;
+				if($offerlines):
+					$fields['offerlines'] = $offerlines;
+				endif;
 			endif;
 
 			$response = $api->offer_create($fields);
@@ -633,15 +669,19 @@ function yid_populate_trans_label( $form ) {
 			
 		endif; 
 		if ( $field->id == $entryfields['gelegenheid_photobooth'] ):
-			$field->conditionalLogic =
-			array(
-				'actionType' => 'show',
-				'logicType' => 'all',
-				'rules' =>
-					array( 
-						array( 'fieldId' => 59, 'operator' => 'contains', 'value' => '348' )
-						)
-			);
+			$photobooth_arrangement_id = get_field('photobooth_arrangement_id', 'options');
+			if (strlen($field->conditionalLogic) === 0) :
+
+				$field->conditionalLogic =
+				array(
+					'actionType' => 'show',
+					'logicType' => 'all',
+					'rules' =>
+						array( 
+							array( 'fieldId' => $entryfields['keuze_arrangement'],  'operator' => 'contains', 'value' => $photobooth_arrangement_id )
+							)
+				);
+			endif;
 		endif; 
 		
 	}

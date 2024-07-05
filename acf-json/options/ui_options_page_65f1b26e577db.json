@@ -12,11 +12,12 @@
     "position": "",
     "redirect": 0,
     "description": "",
+    "menu_icon": [],
     "update_button": "Updaten",
     "updated_message": "Opties bijgewerkt",
     "capability": "edit_posts",
     "data_storage": "options",
     "post_id": "",
     "autoload": 0,
-    "modified": 1716459485
+    "modified": 1718868826
 }
