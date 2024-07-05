@@ -540,7 +540,6 @@ function yid_populate_trans_label( $form ) {
 	$extra_oldtimer_1 = $entryfields['extra_oldtimer_1'];
 	$extra_oldtimer_2 = $entryfields['extra_oldtimer_2'];
 	$keuze_oldtimer = $entryfields['keuze_oldtimer'];
-	$keuze_arrangementid = $entryfields['keuze_arrangement'];
 	if (array_key_exists('keuze_arrangement', $entryfields)):
 		$keuze_arrangementid = $entryfields['keuze_arrangement'];
 	else:
