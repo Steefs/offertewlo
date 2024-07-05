@@ -361,7 +361,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 							"description" => $beschrijving,
 					);
 				endif;
-				
+
 				if($oldtimerValue2):
 					$productfilters = array(
 						array(
@@ -671,7 +671,8 @@ function yid_populate_trans_label( $form ) {
 		endif; 
 		if ( $field->id == $entryfields['gelegenheid_photobooth'] ):
 			$photobooth_arrangement_id = get_field('photobooth_arrangement_id', 'options');
-			if (strlen($field->conditionalLogic) === 0) :
+			
+			if (!is_array($field->conditionalLogic)) :
 
 				$field->conditionalLogic =
 				array(
