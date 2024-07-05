@@ -15,4 +15,4 @@ jobs:
         username: stefan@devolkswagenphotobooth.nl
         timeout: 60000
         password: ${{ secrets.password }}
-        server-dir: public_html/offerte/wp-content/themes/hello-theme-child-master/
+        server-dir: public_html/offerte2/wp-content/themes/hello-theme-child-master/
