@@ -37,6 +37,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 	$business = rgar( $entry, $entryfields['business'] );
 	$gelegenheid_photobooth = rgar( $entry, $entryfields['gelegenheid_photobooth'] );
 	$gelegenheid = false;
+	$weddinggelegenheid = false;
 	if($gelegenheid_photobooth == 'Bedrijfsfeest'):
 		$business = 1;
 		$gelegenheid = 'Photobooth';
@@ -47,9 +48,11 @@ function steefs_set_post_to_api( $entry, $form ) {
 	elseif($gelegenheid_photobooth == 'Bruiloft'):
 		$gelegenheid = 'Photobooth';
 		$tag = 4;
+		$weddinggelegenheid = 1;
 	elseif($gelegenheid_photobooth == 'Bruiloft en trouwvervoer'):
 		$gelegenheid = 'Trouwvervoer en Photobooth';
 		$tag = 4;
+		$weddinggelegenheid = 1;
 	endif;
 	$email = rgar( $entry, $entryfields['email'] );
 	$company_id = false;
@@ -68,7 +71,6 @@ function steefs_set_post_to_api( $entry, $form ) {
 		$api = new gripp_API($token);
 		$template = get_field('templateid', 'option');
 		$naam_website = get_field('naam_website', 'option');
-
 		if($arrid):
 			$arrangementitem = steefs_get_post_by_item($arrid);
 		else:
@@ -82,6 +84,11 @@ function steefs_set_post_to_api( $entry, $form ) {
 			if($business == 1):
 				if(get_field('templateid_zakelijk', $arrangementitem->ID)):
 					$template = get_field('templateid_zakelijk', $arrangementitem->ID);
+				endif;
+			endif;
+			if($weddinggelegenheid == 1):
+				if(get_field('templateid_wedding', $arrangementitem->ID)):
+					$template = get_field('templateid_wedding', $arrangementitem->ID);
 				endif;
 			endif;
 		endif;
@@ -171,6 +178,9 @@ function steefs_set_post_to_api( $entry, $form ) {
 			$dag = false;
 			$result = GFAPI::update_entry_field( rgar( $entry,'id' ),  $entryfields['companyid'], $companyid );
 			$wedding = rgar( $entry, $entryfields['wedding'] );
+			if($weddinggelegenheid == 1):
+				$wedding = 1;
+			endif;
 			if(rgar( $entry, $entryfields['huurdatum'] )):
 				$huurdatum = date_create_from_format('Y-m-d', rgar( $entry, $entryfields['huurdatum'] ));
 				$huurdatumvan = $huurdatum->format('d-m-Y');

@@ -103,6 +103,26 @@
             "append": ""
         },
         {
+            "key": "field_668fc3c062db6",
+            "label": "Templateid (bruiloft)",
+            "name": "templateid_wedding",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_65b7c98d07db0",
             "label": "Naam Gripp auto bruiloft",
             "name": "gripp_car",
@@ -458,5 +478,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1716459466
+    "modified": 1720697817
 }
