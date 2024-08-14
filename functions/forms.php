@@ -243,7 +243,9 @@ function steefs_set_post_to_api( $entry, $form ) {
 			endif;
 			if($wedding):
 				$oldtimer = get_field('gripp_car', $postitem->ID);
-				$gelegenheid = 'Trouwvervoer';
+				if(!$gelegenheid ):
+					$gelegenheid = 'Trouwvervoer';
+				endif;
 				if($arrangementitem):
 					if(get_field('gelegenheid', $arrangementitem->ID)):
 						$gelegenheid = get_field('gelegenheid', $arrangementitem->ID);
@@ -314,7 +316,6 @@ function steefs_set_post_to_api( $entry, $form ) {
 				'description' => '',
 				'tags' =>  [$tagwebsite, $tag]
 			);
-			
 			if($extra_opties):
 			foreach($extra_opties as $extra_optie):
 				$fields['customfield_' . $extra_optie] = 1;
@@ -421,7 +422,6 @@ function steefs_set_post_to_api( $entry, $form ) {
 					$fields['offerlines'] = $offerlines;
 				endif;
 			endif;
-
 			$response = $api->offer_create($fields);
 			if($response):
 				ob_start();
