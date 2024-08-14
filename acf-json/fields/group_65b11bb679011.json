@@ -451,6 +451,26 @@
             "ui": 0,
             "ui_on_text": "",
             "ui_off_text": ""
+        },
+        {
+            "key": "field_66bca49ef77a2",
+            "label": "Koppel aan alle auto's",
+            "name": "add_to_all",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Alleen voor arrangementen",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -478,5 +498,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1720697817
+    "modified": 1723638997
 }

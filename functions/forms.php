@@ -527,18 +527,20 @@ function yid_populate_trans_label( $form ) {
 			if(get_field('wedding', $postitem->ID)):
 				$wedding = 1;
 			endif;
+			
+			if(!get_field('add_to_all', $postitem->ID)):
+			
+				$meta_query = [];
 
-			$meta_query = [];
+				// Append our meta query
+				$meta_query[] = [
+					'key' => 'arrangementen',
+					'value' =>  $postitem->ID,
+					'compare' => 'LIKE',
+				];
 
-			// Append our meta query
-			$meta_query[] = [
-				'key' => 'arrangementen',
-				'value' =>  $postitem->ID,
-				'compare' => 'LIKE',
-			];
-
-			$args['meta_query'] = $meta_query;
-
+				$args['meta_query'] = $meta_query;
+			endif;
 			
 		endif;
 	endif;
