@@ -8,6 +8,7 @@ function datalayerecommerce_func(){
         $unique_code_veld_id = get_field('unique_code_veld_id' , 'options');
         $huurdatum_veld_id = get_field('huurdatum_veld_id' , 'options');
 
+      
         $search_criteria = array(
             'status'        => 'active',
             'field_filters' => array(

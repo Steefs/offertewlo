@@ -43,7 +43,7 @@ require('functions/postcode-check.php');
 
 require('functions/seo.php');
 require('functions/acf.php');
-
+require('functions/extra.php');
 
 //[foobar]
 function foobar_func( $atts ){

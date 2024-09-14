@@ -29,7 +29,7 @@ function steefs_aanvraagiteminfo_func( $atts ){
 }
 add_shortcode( 'aanvraagiteminfo', 'steefs_aanvraagiteminfo_func' );
 
-add_action( 'gform_after_submission_1', 'steefs_set_post_to_api', 10, 2 );
+//add_action( 'gform_after_submission_1', 'steefs_set_post_to_api', 10, 2 );
 function steefs_set_post_to_api( $entry, $form ) {
 	$entryfields = steefs_get_entryfields($form);
 	$itemid = rgar( $entry, $entryfields['itemid'] );
