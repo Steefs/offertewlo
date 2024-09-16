@@ -721,7 +721,7 @@ function yid_populate_trans_label( $form ) {
 		
 }
   
-add_action( 'gform_pre_entry_detail', 'mark_entry_read', 10, 2 );
+//add_action( 'gform_pre_entry_detail', 'mark_entry_read', 10, 2 );
 function mark_entry_read( $form, $entry ){
 	$entryfields = steefs_get_entryfields($form);
 	//echo rgar( $entry, $entryfields['huurdatum'] );
@@ -729,7 +729,7 @@ function mark_entry_read( $form, $entry ){
 	$email = rgar( $entry, $entryfields['email'] );
 
 	//var_dump(steefs_entry_checkbox( $form, $entryfields['extra_opties'], $entry ));
-	steefs_set_post_to_api( $entry, $form );
+	//steefs_set_post_to_api( $entry, $form );
 
 /*
 	require_once('api.class.php');
