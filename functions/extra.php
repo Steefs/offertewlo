@@ -69,9 +69,13 @@ function get_gripp_offertes(){
             );
             $companyresponses = $api->company_getone($companyfilters);
             $companyresponse = $companyresponses[0]['result'];
+            $relation = '';
+            $firstname = '';
             if($companyresponse['rows']):
                 $email = $companyresponse['rows'][0]['email'];
                 $plaats = $companyresponse['rows'][0]['visitingaddress_city'];
+                $relation = $companyresponse['rows'][0]['relationtype']['searchname'];
+                $firstname = $companyresponse['rows'][0]['firstname'];
             endif;
 
 
@@ -153,6 +157,8 @@ function get_gripp_offertes(){
             $input_values['input_23'] = $Website;
             $input_values['input_24'] = $relatie;
             $input_values['input_25'] = $rowresultnumber;
+            $input_values['input_26'] = $relation;
+            $input_values['input_27'] = $firstname;
 
             $result = GFAPI::submit_form( $form_id, $input_values );                
             $nr++;

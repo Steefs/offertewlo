@@ -93,6 +93,9 @@ function steefs_set_post_to_api( $entry, $form ) {
 				endif;
 			endif;
 		endif;
+		if($gelegenheid == 'Trouwvervoer en Photobooth';):
+			$template = '57';
+		endif;
 		$companyid = steefs_get_company($email);
 		if($companyid == false):
 			$phone = phonize(rgar( $entry, $entryfields['telefoonnummer'] ), rgar( $entry, $entryfields['land'] ));
