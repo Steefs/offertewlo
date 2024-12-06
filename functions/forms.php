@@ -315,6 +315,7 @@ function steefs_set_post_to_api( $entry, $form ) {
 				'customfield_website' => $naam_website,
 				'customfield_oldtimer' => $oldtimer,
 				'customfield_gelegenheid' => $gelegenheid,
+				'customfield_gewensteroute' => rgar( $entry, $entryfields['gewensteroute'] ),
 				'customfield_extraoldtimer' => rgar( $entry, $entryfields['extra_oldtimer_1'] ),
 				'customfield_extraoldtimer2' => rgar( $entry, $entryfields['extra_oldtimer_2'] ),
 				'customfield_clientid' => rgar( $entry, $entryfields['clientid'] ),
@@ -715,6 +716,30 @@ function yid_populate_trans_label( $form ) {
 					'rules' =>
 						array( 
 							array( 'fieldId' => $entryfields['keuze_arrangement'],  'operator' => 'contains', 'value' => $photobooth_arrangement_id )
+							)
+				);
+			endif;
+		endif; 
+		if ( $field->id == $entryfields['gewensteroute'] ):
+			if(!$business and !$wedding):
+
+				$field->conditionalLogic =
+				array(
+					'actionType' => 'hide',
+					'logicType' => 'all',
+					'rules' =>
+						array( 
+							array( 'fieldId' => $entryfields['arrid'],  'operator' => 'isnot', 'value' => '' )
+							)
+				);
+			else:
+				$field->conditionalLogic =
+				array(
+					'actionType' => 'show',
+					'logicType' => 'all',
+					'rules' =>
+						array( 
+							array( 'fieldId' => $entryfields['arrid'],  'operator' => 'is', 'value' => 'test' )
 							)
 				);
 			endif;
